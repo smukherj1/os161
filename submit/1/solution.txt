@@ -1,0 +1,19 @@
+1. Cat and Mouse
+The cat and mouse problem was synchronized using locks. Three locks were used. Two locks was used to synchronize
+access to the bowls and another was used to synchronize access between the cats and mice.
+
+To synchronize access between cats and mice we maintain a counter called cats_currently_eating. As the name suggests
+"normally" this variable stores the number of cats currently eating at the bowls. Every cat and mouse must first
+acquire the lock before accessing this variable. The cats have a mutual agreement that if they see two cats already
+eating at the bowls, they will not increment the counter (that is they won't contend for the bowls).
+
+The mice on the other hand use the above agreement the cats have into tricking them into not eating when mice are
+eating. If the mice ever notice the number of cats currently eating is 0, they set it to 3! Thus, any cat will
+not try to eat when the mice are eating. When the last mouse leaves (he sees that cats_currently_eating is 3), he
+sets it to 3 and leaves.
+
+The way starvation is prevented is that in the code, when the cats are done eating or when there are no cats eating,
+the mice get a chance to eat. Also all mice at the bowls finish eating, they set cats_currently_eating to 0 so that
+any cat who still has some eating iterations left can contend for the bowls. Also, every cat or mouse lock the bowls
+before they begin eating and release the bowl lock after they are done eating. So the bowls are always available
+when a cat or mouse is done eating one iteration from it.
